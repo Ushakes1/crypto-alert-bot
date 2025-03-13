@@ -65,17 +65,24 @@ def get_crypto_prices():
     """Fetches latest prices and sends alerts if price drops significantly."""
     try:
         response = requests.get(BINANCE_API_URL)
-        data = response.json()
-        
-        alerts = []
-        for crypto in data:
-            if crypto["symbol"] in FAVORITE_CRYPTO:
-                symbol = crypto["symbol"]
-                price = float(crypto["price"])
-                alerts.append(f"{symbol}: ${price}")
+data = response.json()
 
-        message = "\n".join(alerts)
-        print("Latest Crypto Prices:\n", message)
+if not isinstance(data, list):
+    print("Unexpected API response:", data)
+    return
+
+alerts = []
+for crypto in data:
+    try:
+        symbol = crypto.get("symbol", "UNKNOWN")
+        price = float(crypto.get("price", 0))
+        if symbol in FAVORITE_CRYPTO:
+            alerts.append(f"{symbol}: ${price}")
+    except Exception as e:
+        print(f"Error processing crypto data: {e}")
+
+message = "\n".join(alerts)
+print("Latest Crypto Prices:\n", message)
 
         # Send alerts
         send_email("Crypto Price Alert", message)
