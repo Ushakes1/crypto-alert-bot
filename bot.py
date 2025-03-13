@@ -89,10 +89,9 @@ for crypto in data:
 
 message = "\n".join(alerts)
 print("Latest Crypto Prices:\n", message)
-
-        # Send alerts
-        send_email("Crypto Price Alert", message)
-        send_whatsapp_alert(message)
+# Send alerts
+send_email("Crypto Price Alert", message)
+send_whatsapp_alert(message)
 
     except Exception as e:
         print("Error fetching crypto prices:", e)
