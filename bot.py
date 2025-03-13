@@ -64,8 +64,11 @@ def send_whatsapp_alert(message):
 def get_crypto_prices():
     """Fetches latest prices and sends alerts if price drops significantly."""
     try:
-        response = requests.get(BINANCE_API_URL)
-data = response.json()
+    response = requests.get(BINANCE_API_URL)
+    data = response.json()
+except Exception as e:
+    print("Error fetching crypto prices:", e)
+    data = {}  # Return empty data to prevent crashing
 
 if not isinstance(data, list):
     print("Unexpected API response:", data)
