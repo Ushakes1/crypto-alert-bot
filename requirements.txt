@@ -1,0 +1,5 @@
+requests
+binance
+twilio
+pandas
+numpy
